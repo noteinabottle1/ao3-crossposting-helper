@@ -165,7 +165,7 @@
       case 'custom':
         return customTemplate;
       default:
-        return '[Podfic] ${title}';
+        return '${title}';
     }
   }
 
@@ -185,7 +185,7 @@
       case 'custom':
         return customTemplate;
       default:
-        return '${blocksummary}Podfic of ${title} by ${authors}.';
+        return '${summary}';
     }
   }
 
@@ -212,7 +212,7 @@
       return '';
     }
     // An opening <p> tag (shouldn't have attributes,
-    // but even if it does we can still strip it)
+    // but even if it does, we can still strip it)
     const pOpen = /\s*<p(\s[^>]*)?>\s*/g;
     // A closing </p> tag
     const pClose = /\s*<\/p>\s*/g;
@@ -222,6 +222,27 @@
       .replace(pClose, '@@@')
       .replace(atats, '\n\n')
       .trim();
+  }
+
+  /**
+   * Strip <p> tags, since AO3 doesn't like them in the notes.
+   * @param {HTMLElement|undefined} summary
+   */
+  function sanitizeNotes(note) {
+    if (!note) {
+      return '';
+    }
+    // An opening <p> tag (shouldn't have attributes,
+    // but even if it does, we can still strip it)
+    const pOpen = /\s*<p(\s[^>]*)?>\s*/g;
+    // A closing </p> tag
+    const pClose = /\s*<\/p>\s*/g;
+    const atats = /@@@+/g;
+    return note.innerHTML
+        .replace(pOpen, '@@@')
+        .replace(pClose, '@@@')
+        .replace(atats, '\n\n')
+        .trim();
   }
 
   /**
@@ -309,6 +330,34 @@
     };
   }
 
+
+  /**
+   * Parse the data from a work page.
+   * @param doc {Document}
+   * @returns
+   */
+  function parseData(doc) {
+    const work = doc.getElementById('workskin');
+    // The actual html of the beginning notes, with <p>s replaced.
+    const workBeginningNotes = sanitizeNotes(
+        queryElement(queryElement(work, 'div.notes.module'), '.userstuff')
+    );
+    const workEndingNotes = sanitizeNotes(
+        queryElement(queryElement(work, 'div.end.notes.module'), '.userstuff')
+    );
+    const chapters = doc.getElementById('chapters');
+
+    // Is this a single-chapter work?
+    // const oneShot = queryElement(chapters, '.userstuff');
+
+    return {
+      workBeginningNotes,
+      workEndingNotes,
+      chapters, // see what happens
+      // oneShot,
+    };
+  }
+
   /**
    * Parse the metadata for the work at this url.
    * @param {string} url
@@ -318,10 +367,16 @@
     /** @type {URL} */
     let fetchUrl;
     try {
+      // Strip the chapter number from the url
+      url = url.substring( 0, url.indexOf( "/chapters" ));
       fetchUrl = new URL(url);
     } catch (e) {
       return {result: 'error', message: `Invalid work URL: ${e.message}`};
     }
+    // View the full work, not just the first chapter
+    fetchUrl.searchParams.set('view_full_work', 'true');
+    // Always agree to the ToS
+    fetchUrl.searchParams.set('tos', 'yes');
     // Always consent to seeing "adult content" to simplifying parsing
     fetchUrl.searchParams.set('view_adult', 'true');
     // Initially try to get the work without credentials, this handles cases
@@ -385,6 +440,7 @@
       // We return back the original URL so that storage only ever contains
       // the URL the user input instead of the one we used for fetching.
       metadata: {...parseGenMetadata(doc), url},
+      data: {...parseData(doc), url},
     };
   }
 
@@ -427,6 +483,13 @@
       return importResult;
     }
     const metadata = importResult.metadata;
+    const data= importResult.data;
+    console.log("NOTE");
+    console.log(data);
+    console.log(data["chapters"]);
+    const chapters = data["chapters"];
+
+    console.log("END NOTE");
 
     const newWorkPage = document.getElementById('main');
 
@@ -608,13 +671,29 @@
     );
     // If there's nothing here yet, over-write it.
     if (workText.value == '') {
-      workText.value = transformHtmlTemplate(
-        workbody['default'],
-        metadata['summary'],
-        metadata['title'],
-        metadata['url'],
-        authorMap
-      );
+      if (chapters.getElementsByClassName("chapter").length == 0) {
+        if (chapters.getElementsByClassName("userstuff") == 0) {
+          console.log("No chapters found");
+        } else {
+          // We have ourselves a one shot
+          var oneshot = chapters.getElementsByClassName("userstuff")[0];
+          workText.value = oneshot[0].innerHTML;
+        }
+      } else {
+        // We have ourselves a multi-chapter fic
+        var chapterList = chapters.children;
+        var firstChapter = chapterList[0];
+        var chapterText= firstChapter.querySelectorAll('[role="article"]');
+        if (chapterText.length == 1) {
+          workText.value = chapterText[0].innerHTML;
+        }
+
+        // Preview, then Edit, then Add Chapter
+        var previewButton = document.getElementsByName('preview_button')[0];
+        previewButton.form.submit();
+        var editButton = document.getElementsByName('edit_button')[0];
+        editButton.click();
+      }
     }
 
     if (showPartialCompletionWarning) {

@@ -108,13 +108,13 @@ export async function setupStorage() {
   }
   if (title_template === undefined) {
     await browser.storage.sync.set({
-      title_template: {default: '[Podfic] ${title}'},
+      title_template: {default: '${title}'},
     });
   }
   if (summary_template === undefined) {
     await browser.storage.sync.set({
       summary_template: {
-        default: '${blocksummary}Podfic of ${title} by ${authors}.',
+        default: '${summary}',
       },
     });
   }
