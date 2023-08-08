@@ -5,7 +5,7 @@ const GA_DEBUG_ENDPOINT = 'https://www.google-analytics.com/debug/mp/collect';
 const MEASUREMENT_ID = 'G-4E30H0SRNN';
 // We shouldn't put this in source code, but honestly Google Analytics doesn't
 // matter very much.
-const API_SECRET = '[invalid secret]';
+const API_SECRET = 'BIOj5n61QiGEf26jsOnxeA';
 const DEFAULT_ENGAGEMENT_TIME_MSEC = 100;
 
 // Duration of inactivity after which a new session is created
