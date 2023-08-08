@@ -147,13 +147,13 @@ setupGlobalEventLogging();
   navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {
-    setInputValue(titleTemplate, '[Podfic] ${title}');
+    setInputValue(titleTemplate, '${title}');
   });
 
   summaryResetButton.addEventListener('click', async () => {
     setInputValue(
       summaryTemplate,
-      '${blocksummary}Podfic of ${title} by ${authors}.'
+      '${summary}'
     );
   });
 
