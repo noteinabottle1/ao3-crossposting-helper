@@ -1,4 +1,4 @@
-# AO3 Podfic Posting Helper
+# AO3 Cross Posting Helper
 
 ![Logo: A platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true)
 
@@ -14,9 +14,9 @@ _This is an unofficial extension and not supported by AO3_. Please do not raise 
 
 You can configure it to:
 
-- Automatically add the "Podfic" tag
-- Automatically add a "Podfic Length: X" tag
-- Apply a transformation to the original title, such as adding the prefix "[Podfic] "
+- Automatically add the "Cross-Posted on AO3" tag
+- Automatically add a "Cross-Posted from" tag
+- Apply a transformation to the original title, such as adding the prefix "[Cross-Posted on AO3] "
 - Apply a transformation to the original summary, such as wrapping it in a blockquote and linking to that work and its authors
 
 ![A popup over the new work page, showing the options available to configure importing metadata](images/pop-up-screen-shot.png)
@@ -27,7 +27,7 @@ For example, if the original work is called "Super awesome title" and is by
 "author1" and "author2":
 
 - "**\${title}**" will give you "Super awesome title"
-- "[Podfic] **\${title}**" will give you "[Podfic] Super awesome title"
+- "[Cross-Posted on AO3] **\${title}**" will give you "[Cross-Posted on AO3] Super awesome title"
 - "podfic of **\${title}** by **\${authors}**"
   will give you "podfic of Super awesome title by author1, author2"
 

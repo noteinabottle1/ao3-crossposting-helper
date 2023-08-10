@@ -64,11 +64,11 @@
    * @param url {string}
    */
   function canonicalUrl(url) {
-    // https://archiveofourown.org/
+    // https://squidgeworld.org/
     if (url.startsWith('http')) {
       return url;
     } else {
-      return 'https://archiveofourown.org' + url;
+      return 'https://squidgeworld.org' + url;
     }
   }
 
@@ -347,93 +347,24 @@
     );
     const chapters = doc.getElementById('chapters');
 
-    // Is this a single-chapter work?
-    // const oneShot = queryElement(chapters, '.userstuff');
-
     return {
       workBeginningNotes,
       workEndingNotes,
-      chapters, // see what happens
-      // oneShot,
+      chapters,
     };
   }
 
   /**
-   * Parse the metadata for the work at this url.
+   * Import the Ao3 work at this url.
    * @param {string} url
    */
-  async function importMetadata(url) {
-    // Attempt to parse the URL
-    /** @type {URL} */
-    let fetchUrl;
-    try {
-      // Strip the chapter number from the url
-      url = url.substring( 0, url.indexOf( "/chapters" ));
-      fetchUrl = new URL(url);
-    } catch (e) {
-      return {result: 'error', message: `Invalid work URL: ${e.message}`};
-    }
-    // View the full work, not just the first chapter
-    fetchUrl.searchParams.set('view_full_work', 'true');
-    // Always agree to the ToS
-    fetchUrl.searchParams.set('tos', 'yes');
-    // Always consent to seeing "adult content" to simplifying parsing
-    fetchUrl.searchParams.set('view_adult', 'true');
-    // Initially try to get the work without credentials, this handles cases
-    // where the user has tags or warnings hidden but can fail if the work
-    // the user is importing from is only available to logged-in users.
-    let result;
-    try {
-      result = await window.fetch(fetchUrl, {credentials: 'omit'});
-    } catch (e) {
-      return {
-        result: 'error',
-        message: `Failed to fetch the work! ${e.message}`,
-      };
-    }
-    if (!result.ok) {
-      return {
-        result: 'error',
-        message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
-      };
-    }
+  async function importAo3Work(url) {
+    const html = await new Promise(resolve => {
+      chrome.runtime.sendMessage({ fetchUrl: url }, resolve)
+    })
 
     const domParser = new DOMParser();
-    let html = await result.text();
     let doc = domParser.parseFromString(html, 'text/html');
-
-    // If we end up in this case it means that the work was not available to
-    // logged out users so we will attempt the fetch again but this time we will
-    // forward the user's credentials. If the user has warnings or tags hidden
-    // then there will be errors later on but these are handled.
-    if (result.redirected || looksLikeUnrevealedWork(doc)) {
-      try {
-        result = await window.fetch(fetchUrl, {credentials: 'include'});
-      } catch (e) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! ${e.message}`,
-        };
-      }
-      if (!result.ok) {
-        return {
-          result: 'error',
-          message: `Failed to fetch the work! Error: ${result.status} ${result.statusText}`,
-        };
-      }
-      html = await result.text();
-      doc = domParser.parseFromString(html, 'text/html');
-
-      if (looksLikeUnrevealedWork(doc)) {
-        return {
-          result: 'error',
-          message:
-            'The selected work appears to be unrevealed please contact ' +
-            'the work author to get permission to view the work then try ' +
-            'again',
-        };
-      }
-    }
 
     return {
       result: 'success',
@@ -444,28 +375,105 @@
     };
   }
 
-  function looksLikeUnrevealedWork(/** @type {Document} */ doc) {
-    // The page has a notice saying that the work is yet to be revealed, and
-    // there is no user content.
-    return (
-      Array.from(doc.querySelectorAll('p.notice')).some(notice =>
-        notice.textContent.includes(
-          'This work is part of an ongoing challenge and will ' +
-            'be revealed soon'
-        )
-      ) && !doc.querySelector('.userstuff')
+  async function importAndFillNewChapter(url) {
+    /** @type {InjectedScriptStorageData} */
+    const {
+      options,
+    } = /** @type {InjectedScriptStorageData} */ (
+        await browser.storage.sync.get([
+          'options',
+        ])
     );
+    const importResult = await importAo3Work(options['url']);
+
+    if (importResult.result === 'error') {
+      // Tell the popup that the import failed and the reason why it failed.
+      return importResult;
+    }
+    const data= importResult.data;
+    const chapters = data["chapters"];
+    var chapterList = chapters.children;
+
+    let chapterNumber = 0;
+    var chapterPosition = document.getElementById("chapter_position");
+    if (chapterPosition != null) {
+      chapterNumber = parseInt(chapterPosition.value);
+    }
+    if (chapterNumber == 0) {
+      // We aren't adding a new chapter, so we don't need to do anything.
+      return
+    }
+    if (chapterList.length < chapterNumber) {
+      // No importable chapter exists
+      return
+    }
+    var chapter = chapterList[chapterNumber-1];
+
+    const newChapterPage = document.getElementById('main');
+    var workText = /** @type {HTMLInputElement} */ (
+        queryElement(newChapterPage, '.mce-editor')
+    );
+
+    const chapterSummaryTextArea = /** @type {HTMLTextAreaElement} */ (
+        queryElement(newChapterPage, '#chapter_summary')
+    );
+    var chapterSummaryModule = chapter.getElementsByClassName("summary");
+    if (chapterSummaryModule.length > 0) {
+      var chapterSummary = chapterSummaryModule[0].getElementsByClassName("userstuff");
+      if (chapterSummary.length > 0) {
+        chapterSummaryTextArea.value = chapterSummary[0].innerHTML;
+      }
+    }
+
+    var chapterNotesSections = chapter.getElementsByClassName("notes");
+    if(chapterNotesSections.length > 0) {
+      // We have a beginning chapter notes section
+      var startChapterNote = chapterNotesSections[0];
+      if (startChapterNote.getElementsByClassName("userstuff").length > 0) {
+        var chapterPreface = startChapterNote.getElementsByClassName("userstuff")[0].innerHTML;
+        const chapterBeginNotesCheckmark = /** @type {HTMLInputElement} */ (
+            queryElement(newChapterPage, '#front-notes-options-show')
+        );
+        if (!chapterBeginNotesCheckmark.checked) {
+          chapterBeginNotesCheckmark.click();
+        }
+        const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+            queryElement(newChapterPage, '#chapter_notes')
+        );
+        beginNotesTextArea.value = chapterPreface;
+      }
+    }
+    if (chapterNotesSections.length > 1) {
+      // We have an ending chapter notes section
+      var endChapterNote = chapterNotesSections[1];
+      if (endChapterNote.getElementsByClassName("userstuff").length > 0) {
+        var chapterPostnote = endChapterNote.getElementsByClassName("userstuff")[0].innerHTML;
+        const chapterEndingNotesCheckmark = /** @type {HTMLInputElement} */ (
+            queryElement(newChapterPage, '#front-notes-options-show')
+        );
+        if (!chapterEndingNotesCheckmark.checked) {
+          chapterEndingNotesCheckmark.click();
+        }
+        const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+            queryElement(newChapterPage, '#chapter_endnotes')
+        );
+        endNotesTextArea.value = chapterPostnote;
+      }
+    }
+    var chapterText= chapter.querySelectorAll('[role="article"]');
+    if (chapterText.length == 1) {
+      workText.value = chapterText[0].innerHTML;
+    }
+
   }
 
-  async function importAndFillMetadata() {
+  async function importAndFillAo3Work() {
     let showPartialCompletionWarning = false;
     /** @type {InjectedScriptStorageData} */
     const {
       options,
-      workbody,
       summary_template,
       title_template,
-      notes_template,
     } = /** @type {InjectedScriptStorageData} */ (
       await browser.storage.sync.get([
         'options',
@@ -476,7 +484,7 @@
       ])
     );
 
-    const importResult = await importMetadata(options['url']);
+    const importResult = await importAo3Work(options['url']);
 
     if (importResult.result === 'error') {
       // Tell the popup that the import failed and the reason why it failed.
@@ -484,12 +492,7 @@
     }
     const metadata = importResult.metadata;
     const data= importResult.data;
-    console.log("NOTE");
-    console.log(data);
-    console.log(data["chapters"]);
     const chapters = data["chapters"];
-
-    console.log("END NOTE");
 
     const newWorkPage = document.getElementById('main');
 
@@ -560,24 +563,10 @@
     setTagsInputValue(characterInput, metadata['characters'].join(', '));
 
     // Find the freeform tags input, and insert a comma-separated list of
-    // freeform tags. (potentially auto-adding "Podfic" and "Podfic
-    // Length" tags) Tell ao3 we did so.
+    // freeform tags.
     const additionalTagsInput = /** @type {HTMLInputElement} */ (
       queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input')
     );
-    if (options['podfic_label']) {
-      metadata['freeformTags'].push('Podfic');
-    }
-    if (options['podfic_length_label']) {
-      metadata['freeformTags'].push(
-        'Podfic Length: ' + options['podfic_length_value']
-      );
-    }
-    for (const tagId of options.audioFormatTagOptionIds || []) {
-      metadata['freeformTags'].push(
-        `Audio Format: ${tagId.replace('audio-format-tag-', '')}`
-      );
-    }
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
 
     // Set the title.
@@ -611,14 +600,7 @@
       authorMap
     );
 
-    const notesTemplate = transformHtmlTemplate(
-      notes_template['default'],
-      metadata['summary'],
-      metadata['title'],
-      metadata['url'],
-      authorMap
-    );
-    if (notes_template['begin']) {
+    if (data['workBeginningNotes']) {
       const beginNotesCheckmark = /** @type {HTMLInputElement} */ (
         queryElement(newWorkPage, '#front-notes-options-show')
       );
@@ -628,9 +610,9 @@
       const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
         queryElement(newWorkPage, '#work_notes')
       );
-      beginNotesTextArea.value = notesTemplate;
+      beginNotesTextArea.value = data['workBeginningNotes'];
     }
-    if (notes_template['end']) {
+    if (data['workEndingNotes']) {
       const endNotesCheckmark = /** @type {HTMLInputElement} */ (
         queryElement(newWorkPage, '#end-notes-options-show')
       );
@@ -640,23 +622,8 @@
       const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
         queryElement(newWorkPage, '#work_endnotes')
       );
-      endNotesTextArea.value = notesTemplate;
+      endNotesTextArea.value = data['workEndingNotes'];
     }
-
-    // Set the "inspired by" work url.
-    const parentCheckmark = /** @type {HTMLInputElement} */ (
-      queryElement(queryElement(newWorkPage, 'dt.parent'), 'input')
-    );
-    if (!parentCheckmark.checked) {
-      parentCheckmark.click();
-    }
-    const parentUrl = /** @type {HTMLInputElement} */ (
-      queryElement(
-        newWorkPage,
-        '#work_parent_work_relationships_attributes_0_url'
-      )
-    );
-    parentUrl.value = metadata['url'];
 
     // Set the same language as the original work.
     const languageSelect = /** @type {HTMLSelectElement} */ (
@@ -666,7 +633,7 @@
     languageSelect.value = languageOptions.get(metadata['language']);
 
     // Set the new work text.
-    const workText = /** @type {HTMLInputElement} */ (
+    var workText = /** @type {HTMLInputElement} */ (
       queryElement(newWorkPage, '.mce-editor')
     );
     // If there's nothing here yet, over-write it.
@@ -677,22 +644,52 @@
         } else {
           // We have ourselves a one shot
           var oneshot = chapters.getElementsByClassName("userstuff")[0];
-          workText.value = oneshot[0].innerHTML;
+          workText.value = oneshot.innerHTML;
         }
       } else {
+        console.log("multi chapter found");
         // We have ourselves a multi-chapter fic
         var chapterList = chapters.children;
         var firstChapter = chapterList[0];
+        var chapterNotesSections = firstChapter.getElementsByClassName("preface");
+        if(chapterNotesSections.length > 0) {
+          // We have a beginning chapter notes section
+          var prefaceGroup = chapterNotesSections[0];
+          if (prefaceGroup.getElementsByClassName("userstuff").length > 0) {
+            var chapterPreface = prefaceGroup.getElementsByClassName("userstuff")[0].innerHTML;
+            const chapterBeginNotesCheckmark = /** @type {HTMLInputElement} */ (
+                queryElement(newWorkPage, '#front-notes-options-show')
+            );
+            if (!chapterBeginNotesCheckmark.checked) {
+              chapterBeginNotesCheckmark.click();
+            }
+            const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+                queryElement(newWorkPage, '#work_notes')
+            );
+            beginNotesTextArea.value = chapterPreface;
+          }
+        }
+        if (chapterNotesSections.length > 1) {
+          // We have an ending chapter notes section
+          var prefaceGroup = chapterNotesSections[1];
+          if (prefaceGroup.getElementsByClassName("userstuff").length > 0) {
+            var chapterPostnote = prefaceGroup.getElementsByClassName("userstuff")[0].innerHTML;
+            const chapterEndingNotesCheckmark = /** @type {HTMLInputElement} */ (
+                queryElement(newWorkPage, '#front-notes-options-show')
+            );
+            if (!chapterEndingNotesCheckmark.checked) {
+              chapterEndingNotesCheckmark.click();
+            }
+            const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
+                queryElement(newWorkPage, '#work_notes')
+            );
+            endNotesTextArea.value = chapterPostnote;
+          }
+        }
         var chapterText= firstChapter.querySelectorAll('[role="article"]');
         if (chapterText.length == 1) {
           workText.value = chapterText[0].innerHTML;
         }
-
-        // Preview, then Edit, then Add Chapter
-        var previewButton = document.getElementsByName('preview_button')[0];
-        previewButton.form.submit();
-        var editButton = document.getElementsByName('edit_button')[0];
-        editButton.click();
       }
     }
 
@@ -711,9 +708,22 @@
     }
   }
 
+  const ADD_CHAPTER_URL_PATTERNS = [
+    /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
+  ]
   // A cheap way to get a general unhandled error listener.
   try {
-    await importAndFillMetadata();
+    const currentTab = window.location.href;
+    // If we are on a page that is adding a new chapter
+    if (
+        ADD_CHAPTER_URL_PATTERNS.some(
+            addChapterUrlPattern => currentTab.match(addChapterUrlPattern) !== null
+        )
+    ) {
+      await importAndFillNewChapter();
+    } else {
+      await importAndFillAo3Work();
+    }
   } catch (e) {
     let debugMessage;
     if (e instanceof Error) {
