@@ -3,7 +3,6 @@
    * Object representing the data available to the injected script.
    * @typedef {Object} InjectedScriptStorageData
    * @property {import("./utils.js").PopupFormData} options
-   * @property {import("./utils.js").TemplateData} workbody
    * @property {import("./utils.js").TemplateData} summary_template
    * @property {import("./utils.js").TemplateData} title_template
    * @property {import("./utils.js").TemplateData} notes_template
@@ -477,7 +476,6 @@
     } = /** @type {InjectedScriptStorageData} */ (
       await browser.storage.sync.get([
         'options',
-        'workbody',
         'summary_template',
         'title_template',
         'notes_template',
@@ -563,10 +561,14 @@
     setTagsInputValue(characterInput, metadata['characters'].join(', '));
 
     // Find the freeform tags input, and insert a comma-separated list of
-    // freeform tags.
+    // freeform tags. (potentially auto-adding "Cross-Posted from AO3" tags)
+    // Tell ao3 we did so.
     const additionalTagsInput = /** @type {HTMLInputElement} */ (
       queryElement(queryElement(newWorkPage, 'dd.freeform'), 'input')
     );
+    if (options['ao3_crosspost_label']) {
+      metadata['freeformTags'].push('Cross-Posted from AO3');
+    }
     setTagsInputValue(additionalTagsInput, metadata['freeformTags'].join(', '));
 
     // Set the title.

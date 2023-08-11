@@ -30,7 +30,7 @@
             class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
             aria-label="Submit feedback"
             title="Submit feedback"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BPopup%5D%3A%20"
+            href="https://github.com/LazyCats-dev/ao3-crossposting-helper/issues/new?title=%5BPopup%5D%3A%20"
             target="_blank"
             rel="noopener"
             data-mdc-auto-init="MDCRipple"
@@ -94,7 +94,7 @@
                 <input
                   type="checkbox"
                   class="mdc-checkbox__native-control"
-                  id="podfic_label" />
+                  id="ao3_crosspost_label" />
                 <div class="mdc-checkbox__background">
                   <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                     <path
@@ -106,336 +106,7 @@
                 </div>
                 <div class="mdc-checkbox__ripple"></div>
               </div>
-              <label for="podfic_label">Add the tag "Cross-Posted on AO3"</label>
-            </div>
-          </div>
-          <div class="form-item">
-            <div class="podfic-length-controls" role="group">
-              <div
-                class="mdc-form-field length-checkbox"
-                data-mdc-auto-init="MDCFormField">
-                <div class="mdc-checkbox" data-mdc-auto-init="MDCCheckbox">
-                  <input
-                    type="checkbox"
-                    class="mdc-checkbox__native-control"
-                    id="podfic_length_label" />
-                  <div class="mdc-checkbox__background">
-                    <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                      <path
-                        class="mdc-checkbox__checkmark-path"
-                        fill="none"
-                        d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                    </svg>
-                    <div class="mdc-checkbox__mixedmark"></div>
-                  </div>
-                  <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="podfic_length_label">
-                  Add a "Cross-Posted on AO3 Length" tag
-                </label>
-              </div>
-              <div
-                class="mdc-select mdc-select--filled"
-                id="podfic-length-select"
-                data-mdc-auto-init="MDCSelect">
-                <input
-                  type="hidden"
-                  name="podfic_length_value"
-                  id="podfic_length_value" />
-                <div
-                  class="mdc-select__anchor"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                  aria-labelledby="podfic-length-label podfic-length-selected-text"
-                  data-mdc-auto-init="MDCRipple">
-                  <span class="mdc-select__ripple"></span>
-                  <span id="podfic-length-label" class="mdc-floating-label">
-                    Length
-                  </span>
-                  <span class="mdc-select__selected-text-container">
-                    <span
-                      id="podfic-length-selected-text"
-                      class="mdc-select__selected-text"></span>
-                  </span>
-                  <span class="mdc-select__dropdown-icon">
-                    <svg
-                      class="mdc-select__dropdown-icon-graphic"
-                      viewBox="7 10 10 5"
-                      focusable="false">
-                      <polygon
-                        class="mdc-select__dropdown-icon-inactive"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 10 12 15 17 10"></polygon>
-                      <polygon
-                        class="mdc-select__dropdown-icon-active"
-                        stroke="none"
-                        fill-rule="evenodd"
-                        points="7 15 12 10 17 15"></polygon>
-                    </svg>
-                  </span>
-                  <span class="mdc-line-ripple"></span>
-                </div>
-
-                <div
-                  class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth"
-                  data-mdc-auto-init="MDCMenu">
-                  <ul
-                    class="mdc-deprecated-list"
-                    role="listbox"
-                    aria-label="Cross-Posted on AO3 length listbox"
-                    data-mdc-auto-init="MDCList">
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="0-10 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-0-10-minutes">
-                        0-10 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="10-20 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-10-20-minutes">
-                        10-20 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="20-30 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-20-30-minutes">
-                        20-30 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="30-45 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-30-45-minutes">
-                        30-45 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="45-60 Minutes"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-45-60-minutes">
-                        45-60 Minutes
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="1-1.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-1-1.5-hours">
-                        1-1.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="1.5-2 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-1.5-2-hours">
-                        1.5-2 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="2-2.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-2-2.5-hours">
-                        2-2.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="2.5-3 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-2.5-3-hours">
-                        2.5-3 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="3-3.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-3-3.5-hours">
-                        3-3.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="3.5-4 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-3.5-4-hours">
-                        3.5-4 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="4-4.5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-4-4.5-hours">
-                        4-4.5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="4.5-5 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-4.5-5-hours">
-                        4.5-5 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="5-6 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-5-6-hours">
-                        5-6 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="6-7 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-6-7-hours">
-                        6-7 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="7-10 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-7-10-hours">
-                        7-10 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="10-15 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-10-15-hours">
-                        10-15 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="15-20 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-15-20-hours">
-                        15-20 Hours
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="Over 20 Hours"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="podfic-length-over-20-hours">
-                        Over 20 Hours
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <label for="ao3_crosspost_label">Add the tag "Cross-Posted from AO3"</label>
             </div>
           </div>
           <div class="form-item">
@@ -500,23 +171,23 @@
                       <span class="mdc-deprecated-list-item__ripple"></span>
                       <span
                         class="mdc-deprecated-list-item__text"
-                        id="title-format-podfic-and-title">
-                        "[Cross-Posted on AO3] " + title
+                        id="title-format-original-title">
+                        Original title
                       </span>
                     </li>
                     <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
-                      data-value="orig"
+                      data-value="prefixed"
                       role="option"
                       data-mdc-auto-init="MDCRipple">
                       <span class="mdc-deprecated-list-item__ripple"></span>
                       <span
                         class="mdc-deprecated-list-item__text"
-                        id="title-format-original-title">
-                        Original title
+                        id="title-format-podfic-and-title">
+                        "[Cross-Post] " + title
                       </span>
-                    </li>
+                  </li>
                     <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
@@ -599,9 +270,22 @@
                     aria-label="Summary template listbox"
                     data-mdc-auto-init="MDCList">
                     <li
+                            class="mdc-deprecated-list-item"
+                            aria-selected="false"
+                            data-value="default"
+                            role="option"
+                            data-mdc-auto-init="MDCRipple">
+                      <span class="mdc-deprecated-list-item__ripple"></span>
+                      <span
+                              class="mdc-deprecated-list-item__text"
+                              id="summary-format-original-summary">
+                        Original summary
+                      </span>
+                    </li>
+                    <li
                       class="mdc-deprecated-list-item"
                       aria-selected="false"
-                      data-value="default"
+                      data-value="summary-and-credits"
                       role="option"
                       data-mdc-auto-init="MDCRipple">
                       <span class="mdc-deprecated-list-item__ripple"></span>
@@ -609,19 +293,6 @@
                         class="mdc-deprecated-list-item__text"
                         id="summary-format-summary-and-credits">
                         Summary + credits
-                      </span>
-                    </li>
-                    <li
-                      class="mdc-deprecated-list-item"
-                      aria-selected="false"
-                      data-value="orig"
-                      role="option"
-                      data-mdc-auto-init="MDCRipple">
-                      <span class="mdc-deprecated-list-item__ripple"></span>
-                      <span
-                        class="mdc-deprecated-list-item__text"
-                        id="summary-format-original-summary">
-                        Original summary
                       </span>
                     </li>
                     <li
@@ -652,134 +323,6 @@
                     </li>
                   </ul>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-item audio-format-tags-container">
-            <label id="audio-format-tags-label">Add "Audio Format" tags:</label>
-            <div
-              class="mdc-chip-set mdc-chip-set--filter"
-              role="grid"
-              data-mdc-auto-init="MDCChipSet"
-              id="audio-format-tags"
-              aria-labelledby="audio-format-tags-label"
-              aria-multiselectable="true">
-              <div class="mdc-chip" role="row" id="audio-format-tag-MP3">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-mp3">
-                      MP3
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-M4A">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-m4a">
-                      M4A
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-M4B">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-m4b">
-                      M4B
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-Streaming">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span
-                      class="mdc-chip__text"
-                      id="audio-format-tag-streaming">
-                      Streaming
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="mdc-chip" role="row" id="audio-format-tag-Download">
-                <div class="mdc-chip__ripple"></div>
-                <span class="mdc-chip__checkmark">
-                  <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
-                    <path
-                      class="mdc-chip__checkmark-path"
-                      fill="none"
-                      stroke="black"
-                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                  </svg>
-                </span>
-                <span role="gridcell">
-                  <span
-                    role="checkbox"
-                    tabindex="0"
-                    aria-checked="false"
-                    class="mdc-chip__primary-action">
-                    <span class="mdc-chip__text" id="audio-format-tag-download">
-                      Download
-                    </span>
-                  </span>
-                </span>
               </div>
             </div>
           </div>

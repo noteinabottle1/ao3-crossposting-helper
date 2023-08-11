@@ -38,7 +38,7 @@
             aria-label="Github"
             title="Github"
             id="github_button"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+            href="https://github.com/noteinabottle1/ao3-crossposting-helper"
             target="_blank"
             rel="noopener"
             data-mdc-auto-init="MDCRipple">
@@ -49,7 +49,7 @@
             class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
             aria-label="Submit feedback"
             title="Submit feedback"
-            href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new?title=%5BOptions%5D%3A%20"
+            href="https://github.com/noteinabottle1/ao3-crossposting-helper/issues/new?title=%5BOptions%5D%3A%20"
             target="_blank"
             rel="noopener"
             data-mdc-auto-init="MDCRipple">
@@ -119,19 +119,6 @@
               notes
             </i>
             <span class="mdc-deprecated-list-item__text">Notes template</span>
-          </a>
-          <a
-            class="mdc-deprecated-list-item"
-            href="#work-section"
-            data-mdc-auto-init="MDCRipple"
-            id="work-template-nav-list-button">
-            <span class="mdc-deprecated-list-item__ripple"></span>
-            <i
-              class="material-icons mdc-deprecated-list-item__graphic"
-              aria-hidden="true">
-              work
-            </i>
-            <span class="mdc-deprecated-list-item__text">Work template</span>
           </a>
           <hr class="mdc-deprecated-list-divider" />
           <a
@@ -508,81 +495,6 @@
             </div>
           </form>
         </section>
-        <section id="work-section" class="main-section">
-          <form id="work_form">
-            <div class="mdc-card mdc-card--outlined">
-              <header>
-                <h1 class="mdc-typography--headline5">Work template</h1>
-              </header>
-              <p>Set the default work template for your work.</p>
-              <p>
-                Note: this will leave the body of your work alone if your draft
-                already has text there.
-              </p>
-              <p>
-                This template supports keyword substitution.
-                <a
-                  href="#common-template-keywords-section"
-                  id="work-template-help-keywords">
-                  Learn more about keyword substitution
-                </a>
-              </p>
-              <p>
-                This template supports HTML.
-                <a
-                  href="https://archiveofourown.org/faq/formatting-content-on-ao3-with-html?language_id=en#canihtml"
-                  target="_blank"
-                  id="work-template-help-html">
-                  Learn more about using HTML on AO3
-                </a>
-              </p>
-              <label
-                class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea"
-                data-mdc-auto-init="MDCTextField">
-                <span class="mdc-text-field__ripple"></span>
-                <span class="mdc-floating-label" id="default_body_label">
-                  Work template
-                </span>
-                <span class="mdc-text-field__resizer">
-                  <textarea
-                    class="mdc-text-field__input code-editor-textarea"
-                    rows="20"
-                    cols="100"
-                    aria-labelledby="default_body_label"
-                    id="default_body"
-                    required
-                    spellcheck="false"></textarea>
-                </span>
-                <span class="mdc-line-ripple"></span>
-              </label>
-              <div class="mdc-text-field-helper-line">
-                <div
-                  class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
-                  aria-hidden="true"></div>
-              </div>
-              <h2 class="mdc-typography--subtitle2">
-                Preview of generated HTML
-              </h2>
-              <pre>
-                            <code id="default_body_preview" class="language-html"></code>
-                        </pre>
-              <div class="mdc-card__actions actions">
-                <button
-                  class="mdc-button mdc-button--raised mdc-card__action"
-                  type="submit"
-                  data-mdc-auto-init="MDCRipple">
-                  <div class="mdc-button__ripple"></div>
-                  <i class="material-icons mdc-button__icon" aria-hidden="true">
-                    save
-                  </i>
-                  <span class="mdc-button__label" id="work-template-save">
-                    Save
-                  </span>
-                </button>
-              </div>
-            </div>
-          </form>
-        </section>
         <section class="about-section main-section" id="about-section">
           <div class="mdc-card mdc-card--outlined">
             <header id="about">
@@ -600,7 +512,7 @@
                 <ul>
                   <li>
                     <a
-                      href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
+                      href="https://chrome.google.com/webstore/detail/ao3-crossposting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
                       target="_blank"
                       rel="noopener"
                       id="distrubtions-chrome">
@@ -609,7 +521,7 @@
                   </li>
                   <li>
                     <a
-                      href="https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj"
+                      href="https://microsoftedge.microsoft.com/addons/detail/ao3-crossposting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj"
                       target="_blank"
                       rel="noopener"
                       id="distributions-edge">
@@ -618,7 +530,7 @@
                   </li>
                   <li>
                     <a
-                      href="https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/"
+                      href="https://addons.mozilla.org/en-US/firefox/addon/ao3-crossposting-helper/"
                       target="_blank"
                       rel="noopener"
                       id="distributions-firefox">
@@ -634,29 +546,9 @@
                 <p>There are a few ways to submit feedback or report bugs:</p>
                 <ul>
                   <li>
-                    By asking a question in our
-                    <a
-                      href="https://discord.gg/rhynWjrCw2"
-                      target="_blank"
-                      rel="noopener"
-                      id="feedback-discord">
-                      Discord server
-                    </a>
-                  </li>
-                  <li>
-                    From the "Support" tab of the
-                    <a
-                      href="https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=cextension&utm_medium=extension&utm_campaign=options"
-                      target="_blank"
-                      rel="noopener"
-                      id="feedback-chrome-web-store">
-                      official chrome web store listing
-                    </a>
-                  </li>
-                  <li>
                     By
                     <a
-                      href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper/issues/new"
+                      href="https://github.com/noteinabottle1/ao3-crossposting-helper/issues/new"
                       target="_blank"
                       rel="noopener"
                       id="feedback-github">
@@ -673,7 +565,7 @@
                 <p>
                   This extension is open source. Source code is available on
                   <a
-                    href="https://github.com/LazyCats-dev/ao3-podfic-posting-helper"
+                    href="https://github.com/noteinabottle1/ao3-crossposting-helper"
                     target="_blank"
                     rel="noopener"
                     id="contributing-github">
@@ -689,6 +581,15 @@
                 <h2 class="mdc-typography--headline6">Credits</h2>
                 <p>This extension was created by:</p>
                 <ul>
+                  <li>
+                    <a
+                      href="https://archiveofourown.org/users/NoteInABottle"
+                      target="_blank"
+                      rel="noopener"
+                      id="credits-noteinabottle">
+                      NoteInABottle
+                    </a>
+                  </li>
                   <li>
                     <a
                       href="https://archiveofourown.org/users/irrationalpie/pseuds/irrationalpie"
