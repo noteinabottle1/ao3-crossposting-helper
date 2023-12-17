@@ -20,11 +20,13 @@ optionsButton.href = browser.runtime.getURL('options.html');
  */
 const ALLOWED_URL_PATTERNS = [
   // Standard new work
-  'https://archiveofourown.org/works/new',
+  'https://squidgeworld.org/works/new',
   // New work added to a collection
-  /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/,
+  /https:\/\/squidgeworld.org\/collections\/(.*)\/works\/new/,
   // Editing an existing work
-  /https:\/\/archiveofourown.org\/works\/[0-9]+\/edit/,
+  /https:\/\/squidgeworld.org\/works\/[0-9]+\/edit/,
+  // Adding a chapter to an existing work
+  /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
 ];
 
 (async () => {
@@ -64,7 +66,7 @@ async function setupPopup() {
   /** @type {HTMLFormElement} */
   const form = document.getElementsByTagName('form')[0];
   const podficLabel = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_label')
+    document.getElementById('ao3_crosspost_label')
   );
   const podficLengthLabel = /** @type {HTMLInputElement} */ (
     document.getElementById('podfic_length_label')
@@ -103,10 +105,6 @@ async function setupPopup() {
     urlTextField.valid = urlInput.validity.valid;
   });
 
-  /** @type {mdc.chips.MDCChipSet} */
-  const audioFormatTagsChipSet =
-    document.querySelector('#audio-format-tags').MDCChipSet;
-
   // When the form is submitted, import metadata from original work.
   form.addEventListener('submit', async submitEvent => {
     // Need to prevent the default so that the popup doesn't refresh.
@@ -122,21 +120,16 @@ async function setupPopup() {
     await browser.storage.sync.set({
       options: {
         url: urlInput.value.trim(),
-        podfic_label: podficLabel.checked,
-        podfic_length_label: podficLengthLabel.checked,
-        podfic_length_value: podficLengthValue.value,
+        ao3_crosspost_label: podficLabel.checked,
         title_format: titleFormatValue.value,
         summary_format: summaryFormatValue.value,
-        audioFormatTagOptionIds: audioFormatTagsChipSet.selectedChipIds,
       },
     });
 
     ANALYTICS.fireEvent('popup_form_submit', {
-      podfic_label: String(podficLabel.checked),
-      podfic_length_value: podficLengthValue.value,
+      ao3_crosspost_label: String(podficLabel.checked),
       title_format: titleFormatValue.value,
       summary_format: summaryFormatValue.value,
-      audio_formats: audioFormatTagsChipSet.selectedChipIds.join(','),
     });
 
     const [tab] = await browser.tabs.query({active: true, currentWindow: true});
@@ -171,20 +164,7 @@ async function setupPopup() {
   const options = data['options'];
 
   setInputValue(urlInput, options['url']);
-  setCheckboxState(podficLabel, options['podfic_label']);
-  setCheckboxState(podficLengthLabel, options['podfic_length_label']);
-  setAudioFormatChips();
-
-  function setAudioFormatChips() {
-    for (const tagOptionId of options.audioFormatTagOptionIds || []) {
-      const chip = audioFormatTagsChipSet.chips.find(
-        chip => chip.id === tagOptionId
-      );
-      if (chip) {
-        chip.selected = true;
-      }
-    }
-  }
+  setCheckboxState(podficLabel, options['ao3_crosspost_label']);
 
   /**
    * For some reason a select is really stupid so we have to find the option
@@ -202,13 +182,7 @@ async function setupPopup() {
     }
   }
 
-  // Podfic length value has special considerations
-  const selectElement = document.getElementById('podfic-length-select');
-  const selectInputElement = selectElement.querySelector('input');
-  setInputValue(selectInputElement, options['podfic_length_value']);
-  clickSelectOption(selectElement, options['podfic_length_value']);
-
-  // Now do the same again for the title format
+  // The title format has special considerations
   const titleSelectElement = document.getElementById('title-template-select');
   const titleSelectInputElement = titleSelectElement.querySelector('input');
   setInputValue(titleSelectInputElement, options['title_format']);

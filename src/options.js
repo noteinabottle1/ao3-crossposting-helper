@@ -147,13 +147,13 @@ setupGlobalEventLogging();
   navList.wrapFocus = true;
 
   titleResetButton.addEventListener('click', async () => {
-    setInputValue(titleTemplate, '[Podfic] ${title}');
+    setInputValue(titleTemplate, '${title}');
   });
 
   summaryResetButton.addEventListener('click', async () => {
     setInputValue(
       summaryTemplate,
-      '${blocksummary}Podfic of ${title} by ${authors}.'
+      '${summary}'
     );
   });
 
@@ -259,15 +259,13 @@ setupGlobalEventLogging();
 
   // Import default body text from storage.
   (async () => {
-    const {title_template, summary_template, notes_template, workbody} =
+    const {title_template, summary_template, notes_template,} =
       await browser.storage.sync.get([
         'title_template',
         'summary_template',
         'notes_template',
-        'workbody',
       ]);
     setInputValue(titleTemplate, title_template['default']);
-    setInputValue(defaultBody, workbody['default']);
     setInputValue(summaryTemplate, summary_template['default']);
     setInputValue(notesTemplate, notes_template['default']);
     setCheckboxState(beginningNotesCheckbox, notes_template['begin']);
@@ -276,13 +274,6 @@ setupGlobalEventLogging();
 
   // When the form is submitted, save the default body text (without overriding
   // other options).
-  workForm.addEventListener('submit', async submitEvent => {
-    submitEvent.preventDefault();
-    await browser.storage.sync.set({
-      workbody: {default: defaultBody.value},
-    });
-    snackbar.open();
-  });
   titleForm.addEventListener('submit', async submitEvent => {
     submitEvent.preventDefault();
     await browser.storage.sync.set({

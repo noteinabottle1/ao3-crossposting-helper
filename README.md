@@ -1,4 +1,4 @@
-# AO3 Podfic Posting Helper
+# AO3 Cross Posting Helper
 
 ![Logo: A platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true)
 
@@ -6,18 +6,17 @@ When you post a new work, this extension can help you by importing metadata such
 
 _This is an unofficial extension and not supported by AO3_. Please do not raise issues with this extension to AO3 support.
 
-[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-podfic-posting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=readme)
+[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-crossposting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=readme)
 
-[Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-podfic-posting-helper/)
+[Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-crossposting-helper/)
 
-[Available as a Microsoft Edge Extension](https://microsoftedge.microsoft.com/addons/detail/ao3-podfic-posting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj)
+[Available as a Microsoft Edge Extension](https://microsoftedge.microsoft.com/addons/detail/ao3-crossposting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj)
 
 You can configure it to:
 
-- Automatically add the "Podfic" tag
-- Automatically add a "Podfic Length: X" tag
-- Apply a transformation to the original title, such as adding the prefix "[Podfic] "
-- Apply a transformation to the original summary, such as wrapping it in a blockquote and linking to that work and its authors
+- Automatically add the "Cross-Posted from AO3" tag
+- Apply a transformation to the original title, such as adding the prefix "[Ao3 Crosspost] "
+- Apply a transformation to the original summary, such as wrapping it in a blockquote and linking to the original work
 
 ![A popup over the new work page, showing the options available to configure importing metadata](images/pop-up-screen-shot.png)
 
@@ -27,9 +26,9 @@ For example, if the original work is called "Super awesome title" and is by
 "author1" and "author2":
 
 - "**\${title}**" will give you "Super awesome title"
-- "[Podfic] **\${title}**" will give you "[Podfic] Super awesome title"
-- "podfic of **\${title}** by **\${authors}**"
-  will give you "podfic of Super awesome title by author1, author2"
+- "[Cross-Posted from AO3] **\${title}**" will give you "[Cross-Posted from AO3] Super awesome title"
+- "crosspost of **\${title}** by **\${authors}**"
+  will give you "crosspost of Super awesome title by author1, author2"
 
 ![An options page where you can configure a custom title transformation](images/title-options-screen-shot.png)
 
