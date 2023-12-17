@@ -49,8 +49,6 @@ If the default set of summary transformations isn't enough, you can configure a 
 
 You can also configure a custom default body for your work, instead of a default which demonstrates how to embed audio, images, or links.
 
-![An options page where you can configure the default body of your new work](images/options-screen-shot.png)
-
 ## Documentation
 
 A lot of the basic structure of this app (popup page/option page/background loader) was built directly on the Chrome extension [getting started tutorial](https://developer.chrome.com/docs/extensions/mv3/getstarted/).
