@@ -1,16 +1,22 @@
 # AO3 Cross Posting Helper
 
-![Logo: A platypus holding a microphone in front of the letters AO3](images/icon-225.png?raw=true)
 
-When you post a new work, this extension can help you by importing metadata such as tags and rating to match the work that inspired you.
+## Fork of this project: [ao3-podfic-posting-helper](https://github.com/LazyCats-dev/ao3-podfic-posting-helper)
 
-_This is an unofficial extension and not supported by AO3_. Please do not raise issues with this extension to AO3 support.
+We'd like to acknowledge [ao3-podfic-posting-helper](https://github.com/LazyCats-dev/ao3-podfic-posting-helper) for giving a great foundation for us to build additional functionality. Please check out that action if you think it better suits your needs. 
+
+
+# AO3 Cross Posting Helper
+
+![Logo: A AO3 icon with a decentralized icon in the O](images/icon-225.png?raw=true)
+
+This extension can help you crosspost a new work in between Ao3 and Ao3 clones such as Squidgeworld.
+
+_This is an unofficial extension and not supported by AO3 or Squidgeworld_. Please do not raise issues with this extension to AO3 or Squidegworld support.
 
 [Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-crossposting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=readme)
 
-[Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-crossposting-helper/)
-
-[Available as a Microsoft Edge Extension](https://microsoftedge.microsoft.com/addons/detail/ao3-crossposting-helper/bhggifekpnmhgpnpgngnfkfjdehlfaoj)
+[Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-cross-posting-helper/)
 
 You can configure it to:
 

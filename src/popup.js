@@ -27,6 +27,7 @@ const ALLOWED_URL_PATTERNS = [
   /https:\/\/squidgeworld.org\/works\/[0-9]+\/edit/,
   // Adding a chapter to an existing work
   /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
+  /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
 ];
 
 (async () => {

@@ -712,6 +712,7 @@
 
   const ADD_CHAPTER_URL_PATTERNS = [
     /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
+    /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
   ]
   // A cheap way to get a general unhandled error listener.
   try {
