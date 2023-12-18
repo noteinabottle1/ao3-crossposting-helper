@@ -1,10 +1,8 @@
 # AO3 Cross Posting Helper
 
-
 ## Fork of this project: [ao3-podfic-posting-helper](https://github.com/LazyCats-dev/ao3-podfic-posting-helper)
 
-We'd like to acknowledge [ao3-podfic-posting-helper](https://github.com/LazyCats-dev/ao3-podfic-posting-helper) for giving a great foundation for us to build additional functionality. Please check out that action if you think it better suits your needs. 
-
+We'd like to acknowledge [ao3-podfic-posting-helper](https://github.com/LazyCats-dev/ao3-podfic-posting-helper) for giving a great foundation for us to build additional functionality. Please check out that action if you think it better suits your needs.
 
 # AO3 Cross Posting Helper
 
@@ -14,7 +12,7 @@ This extension can help you crosspost a new work in between Ao3 and Ao3 clones s
 
 _This is an unofficial extension and not supported by AO3 or Squidgeworld_. Please do not raise issues with this extension to AO3 or Squidegworld support.
 
-[Available on the Chrome Web Store](https://chrome.google.com/webstore/detail/ao3-crossposting-helper/liceoplaldpcfdkndimfppgdcbophgma?utm_source=github&utm_medium=web&utm_campaign=readme)
+[Available on the Chrome Web Store](https://chromewebstore.google.com/detail/ao3-cross-posting-helper/pgijeejlbibgnpfmeljdbjckpdmcmche?hl=en)
 
 [Available as a Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/ao3-cross-posting-helper/)
 
