@@ -28,6 +28,12 @@ const ALLOWED_URL_PATTERNS = [
   // Adding a chapter to an existing work
   /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
   /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
+  // Same as above but for AO3
+  'https://archiveofourown.org/works/new',
+  /https:\/\/archiveofourown.org\/collections\/(.*)\/works\/new/,
+  /https:\/\/archiveofourown.org\/works\/[0-9]+\/edit/,
+  /https:\/\/archiveofourown.org\/works\/[0-9]+\/chapters\/new/,
+  /https:\/\/archiveofourown.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
 ];
 
 (async () => {
@@ -43,7 +49,7 @@ const ALLOWED_URL_PATTERNS = [
   ) {
     document.querySelector(
       '.page-content'
-    ).innerHTML = `This extension can only be used on the AO3 page to create a new work,
+    ).innerHTML = `This extension can only be used on AO3 or Squidgeworld to create a new work,
         create a new work in a collection, or edit an existing work.
         Please go to a supported URL and click the extension icon again.
         To create a new work go to
@@ -68,12 +74,6 @@ async function setupPopup() {
   const form = document.getElementsByTagName('form')[0];
   const podficLabel = /** @type {HTMLInputElement} */ (
     document.getElementById('ao3_crosspost_label')
-  );
-  const podficLengthLabel = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_length_label')
-  );
-  const podficLengthValue = /** @type {HTMLInputElement} */ (
-    document.getElementById('podfic_length_value')
   );
   const titleFormatValue = /** @type {HTMLInputElement} */ (
     document.getElementById('title_template_value')

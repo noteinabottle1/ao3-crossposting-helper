@@ -238,10 +238,10 @@
     const pClose = /\s*<\/p>\s*/g;
     const atats = /@@@+/g;
     return note.innerHTML
-        .replace(pOpen, '@@@')
-        .replace(pClose, '@@@')
-        .replace(atats, '\n\n')
-        .trim();
+      .replace(pOpen, '@@@')
+      .replace(pClose, '@@@')
+      .replace(atats, '\n\n')
+      .trim();
   }
 
   /**
@@ -329,7 +329,6 @@
     };
   }
 
-
   /**
    * Parse the data from a work page.
    * @param doc {Document}
@@ -339,10 +338,10 @@
     const work = doc.getElementById('workskin');
     // The actual html of the beginning notes, with <p>s replaced.
     const workBeginningNotes = sanitizeNotes(
-        queryElement(queryElement(work, 'div.notes.module'), '.userstuff')
+      queryElement(queryElement(work, 'div.notes.module'), '.userstuff')
     );
     const workEndingNotes = sanitizeNotes(
-        queryElement(queryElement(work, 'div.end.notes.module'), '.userstuff')
+      queryElement(queryElement(work, 'div.end.notes.module'), '.userstuff')
     );
     const chapters = doc.getElementById('chapters');
 
@@ -359,8 +358,8 @@
    */
   async function importAo3Work(url) {
     const html = await new Promise(resolve => {
-      chrome.runtime.sendMessage({ fetchUrl: url }, resolve)
-    })
+      chrome.runtime.sendMessage({fetchUrl: url}, resolve);
+    });
 
     const domParser = new DOMParser();
     let doc = domParser.parseFromString(html, 'text/html');
@@ -374,14 +373,10 @@
     };
   }
 
-  async function importAndFillNewChapter(url) {
+  async function importAndFillNewChapter() {
     /** @type {InjectedScriptStorageData} */
-    const {
-      options,
-    } = /** @type {InjectedScriptStorageData} */ (
-        await browser.storage.sync.get([
-          'options',
-        ])
+    const {options} = /** @type {InjectedScriptStorageData} */ (
+      await browser.storage.sync.get(['options'])
     );
     const importResult = await importAo3Work(options['url']);
 
@@ -389,55 +384,57 @@
       // Tell the popup that the import failed and the reason why it failed.
       return importResult;
     }
-    const data= importResult.data;
-    const chapters = data["chapters"];
+    const data = importResult.data;
+    const chapters = data['chapters'];
     var chapterList = chapters.children;
 
     let chapterNumber = 0;
-    var chapterPosition = document.getElementById("chapter_position");
+    var chapterPosition = document.getElementById('chapter_position');
     if (chapterPosition != null) {
       chapterNumber = parseInt(chapterPosition.value);
     }
     if (chapterNumber == 0) {
       // We aren't adding a new chapter, so we don't need to do anything.
-      return
+      return;
     }
     if (chapterList.length < chapterNumber) {
       // No importable chapter exists
-      return
+      return;
     }
-    var chapter = chapterList[chapterNumber-1];
+    var chapter = chapterList[chapterNumber - 1];
 
     const newChapterPage = document.getElementById('main');
     var workText = /** @type {HTMLInputElement} */ (
-        queryElement(newChapterPage, '.mce-editor')
+      queryElement(newChapterPage, '.mce-editor')
     );
 
     const chapterSummaryTextArea = /** @type {HTMLTextAreaElement} */ (
-        queryElement(newChapterPage, '#chapter_summary')
+      queryElement(newChapterPage, '#chapter_summary')
     );
-    var chapterSummaryModule = chapter.getElementsByClassName("summary");
+    var chapterSummaryModule = chapter.getElementsByClassName('summary');
     if (chapterSummaryModule.length > 0) {
-      var chapterSummary = chapterSummaryModule[0].getElementsByClassName("userstuff");
+      var chapterSummary =
+        chapterSummaryModule[0].getElementsByClassName('userstuff');
       if (chapterSummary.length > 0) {
         chapterSummaryTextArea.value = chapterSummary[0].innerHTML;
       }
     }
 
-    var chapterNotesSections = chapter.getElementsByClassName("notes");
-    if(chapterNotesSections.length > 0) {
+    var chapterNotesSections = chapter.getElementsByClassName('notes');
+    if (chapterNotesSections.length > 0) {
       // We have a beginning chapter notes section
       var startChapterNote = chapterNotesSections[0];
-      if (startChapterNote.getElementsByClassName("userstuff").length > 0) {
-        var chapterPreface = startChapterNote.getElementsByClassName("userstuff")[0].innerHTML;
+      if (startChapterNote.getElementsByClassName('userstuff').length > 0) {
+        var chapterPreface =
+          startChapterNote.getElementsByClassName('userstuff')[0].innerHTML;
         const chapterBeginNotesCheckmark = /** @type {HTMLInputElement} */ (
-            queryElement(newChapterPage, '#front-notes-options-show')
+          queryElement(newChapterPage, '#front-notes-options-show')
         );
         if (!chapterBeginNotesCheckmark.checked) {
           chapterBeginNotesCheckmark.click();
         }
         const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-            queryElement(newChapterPage, '#chapter_notes')
+          queryElement(newChapterPage, '#chapter_notes')
         );
         beginNotesTextArea.value = chapterPreface;
       }
@@ -445,42 +442,39 @@
     if (chapterNotesSections.length > 1) {
       // We have an ending chapter notes section
       var endChapterNote = chapterNotesSections[1];
-      if (endChapterNote.getElementsByClassName("userstuff").length > 0) {
-        var chapterPostnote = endChapterNote.getElementsByClassName("userstuff")[0].innerHTML;
+      if (endChapterNote.getElementsByClassName('userstuff').length > 0) {
+        var chapterPostnote =
+          endChapterNote.getElementsByClassName('userstuff')[0].innerHTML;
         const chapterEndingNotesCheckmark = /** @type {HTMLInputElement} */ (
-            queryElement(newChapterPage, '#front-notes-options-show')
+          queryElement(newChapterPage, '#front-notes-options-show')
         );
         if (!chapterEndingNotesCheckmark.checked) {
           chapterEndingNotesCheckmark.click();
         }
         const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-            queryElement(newChapterPage, '#chapter_endnotes')
+          queryElement(newChapterPage, '#chapter_endnotes')
         );
         endNotesTextArea.value = chapterPostnote;
       }
     }
-    var chapterText= chapter.querySelectorAll('[role="article"]');
+    var chapterText = chapter.querySelectorAll('[role="article"]');
     if (chapterText.length == 1) {
       workText.value = chapterText[0].innerHTML;
     }
-
   }
 
   async function importAndFillAo3Work() {
     let showPartialCompletionWarning = false;
     /** @type {InjectedScriptStorageData} */
-    const {
-      options,
-      summary_template,
-      title_template,
-    } = /** @type {InjectedScriptStorageData} */ (
-      await browser.storage.sync.get([
-        'options',
-        'summary_template',
-        'title_template',
-        'notes_template',
-      ])
-    );
+    const {options, summary_template, title_template} =
+      /** @type {InjectedScriptStorageData} */ (
+        await browser.storage.sync.get([
+          'options',
+          'summary_template',
+          'title_template',
+          'notes_template',
+        ])
+      );
 
     const importResult = await importAo3Work(options['url']);
 
@@ -489,8 +483,8 @@
       return importResult;
     }
     const metadata = importResult.metadata;
-    const data= importResult.data;
-    const chapters = data["chapters"];
+    const data = importResult.data;
+    const chapters = data['chapters'];
 
     const newWorkPage = document.getElementById('main');
 
@@ -640,55 +634,59 @@
     );
     // If there's nothing here yet, over-write it.
     if (workText.value == '') {
-      if (chapters.getElementsByClassName("chapter").length == 0) {
-        if (chapters.getElementsByClassName("userstuff") == 0) {
-          console.log("No chapters found");
+      if (chapters.getElementsByClassName('chapter').length == 0) {
+        if (chapters.getElementsByClassName('userstuff') == 0) {
+          console.log('No chapters found');
         } else {
           // We have ourselves a one shot
-          var oneshot = chapters.getElementsByClassName("userstuff")[0];
+          var oneshot = chapters.getElementsByClassName('userstuff')[0];
           workText.value = oneshot.innerHTML;
         }
       } else {
-        console.log("multi chapter found");
+        console.log('multi chapter found');
         // We have ourselves a multi-chapter fic
         var chapterList = chapters.children;
         var firstChapter = chapterList[0];
-        var chapterNotesSections = firstChapter.getElementsByClassName("preface");
-        if(chapterNotesSections.length > 0) {
+        var chapterNotesSections =
+          firstChapter.getElementsByClassName('preface');
+        if (chapterNotesSections.length > 0) {
           // We have a beginning chapter notes section
           var prefaceGroup = chapterNotesSections[0];
-          if (prefaceGroup.getElementsByClassName("userstuff").length > 0) {
-            var chapterPreface = prefaceGroup.getElementsByClassName("userstuff")[0].innerHTML;
+          if (prefaceGroup.getElementsByClassName('userstuff').length > 0) {
+            var chapterPreface =
+              prefaceGroup.getElementsByClassName('userstuff')[0].innerHTML;
             const chapterBeginNotesCheckmark = /** @type {HTMLInputElement} */ (
-                queryElement(newWorkPage, '#front-notes-options-show')
+              queryElement(newWorkPage, '#front-notes-options-show')
             );
             if (!chapterBeginNotesCheckmark.checked) {
               chapterBeginNotesCheckmark.click();
             }
             const beginNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-                queryElement(newWorkPage, '#work_notes')
+              queryElement(newWorkPage, '#work_notes')
             );
             beginNotesTextArea.value = chapterPreface;
           }
         }
         if (chapterNotesSections.length > 1) {
           // We have an ending chapter notes section
-          var prefaceGroup = chapterNotesSections[1];
-          if (prefaceGroup.getElementsByClassName("userstuff").length > 0) {
-            var chapterPostnote = prefaceGroup.getElementsByClassName("userstuff")[0].innerHTML;
-            const chapterEndingNotesCheckmark = /** @type {HTMLInputElement} */ (
+          prefaceGroup = chapterNotesSections[1];
+          if (prefaceGroup.getElementsByClassName('userstuff').length > 0) {
+            var chapterPostnote =
+              prefaceGroup.getElementsByClassName('userstuff')[0].innerHTML;
+            const chapterEndingNotesCheckmark =
+              /** @type {HTMLInputElement} */ (
                 queryElement(newWorkPage, '#front-notes-options-show')
-            );
+              );
             if (!chapterEndingNotesCheckmark.checked) {
               chapterEndingNotesCheckmark.click();
             }
             const endNotesTextArea = /** @type {HTMLTextAreaElement} */ (
-                queryElement(newWorkPage, '#work_notes')
+              queryElement(newWorkPage, '#work_notes')
             );
             endNotesTextArea.value = chapterPostnote;
           }
         }
-        var chapterText= firstChapter.querySelectorAll('[role="article"]');
+        var chapterText = firstChapter.querySelectorAll('[role="article"]');
         if (chapterText.length == 1) {
           workText.value = chapterText[0].innerHTML;
         }
@@ -713,15 +711,17 @@
   const ADD_CHAPTER_URL_PATTERNS = [
     /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/new/,
     /https:\/\/squidgeworld.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
-  ]
+    /https:\/\/archiveofourown.org\/works\/[0-9]+\/chapters\/new/,
+    /https:\/\/archiveofourown.org\/works\/[0-9]+\/chapters\/[0-9]+\/edit/,
+  ];
   // A cheap way to get a general unhandled error listener.
   try {
     const currentTab = window.location.href;
     // If we are on a page that is adding a new chapter
     if (
-        ADD_CHAPTER_URL_PATTERNS.some(
-            addChapterUrlPattern => currentTab.match(addChapterUrlPattern) !== null
-        )
+      ADD_CHAPTER_URL_PATTERNS.some(
+        addChapterUrlPattern => currentTab.match(addChapterUrlPattern) !== null
+      )
     ) {
       await importAndFillNewChapter();
     } else {
