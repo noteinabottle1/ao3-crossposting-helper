@@ -12,7 +12,7 @@
   "permissions": ["storage", "activeTab", "scripting", "https://archiveofourown.org/*", "https://www.squidgeworld.org/*"],
   "host_permissions": ["https://archiveofourown.org/*", "https://www.squidgeworld.org/*"],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
   "action": {
     "default_popup": "popup.html",
