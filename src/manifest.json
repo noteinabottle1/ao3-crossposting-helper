@@ -2,11 +2,11 @@
   "$schema": "https://json.schemastore.org/chrome-manifest",
   "name": "AO3 Cross Posting Helper",
   "description": "Autofill a new work on Ao3 or Squidgeworld",
-  "version": "0.1",
+  "version": "3.6",
   "manifest_version": 3,
   "browser_specific_settings": {
     "gecko": {
-      "id": "ao3-crossposting-helper@github.com"
+      "id": "ao3-cross-posting-helper@github.com"
     }
   },
   "permissions": ["storage", "activeTab", "scripting", "https://archiveofourown.org/*", "https://www.squidgeworld.org/*"],
